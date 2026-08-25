@@ -1,0 +1,32 @@
+name: Pemicu Autopilot Saham
+
+on:
+  schedule:
+    # Menggunakan zona waktu UTC. 09:15 UTC sama dengan 16:15 WIB.
+    - cron: '15 09 * * *'
+  workflow_dispatch: # Memungkinkan kita menekan tombol Run manual untuk testing
+
+jobs:
+  buka-website:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Puppeteer (Headless Chrome)
+        run: npm i puppeteer
+        
+      - name: Eksekusi URL Tembus Keamanan InfinityFree
+        run: |
+          node -e "
+          const puppeteer = require('puppeteer');
+          (async () => {
+            console.log('Membuka browser...');
+            const browser = await puppeteer.launch({args: ['--no-sandbox']});
+            const page = await browser.newPage();
+            // Menyamar menjadi manusia seutuhnya
+            await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
+            console.log('Mengunjungi master_auto.php...');
+            // networkidle2 memastikan halaman menunggu loading Javascript InfinityFree selesai
+            await page.goto('https://saham.xo.je/master_auto.php', {waitUntil: 'networkidle2', timeout: 60000});
+            console.log('Sukses tereksekusi!');
+            await browser.close();
+          })();
+          "
