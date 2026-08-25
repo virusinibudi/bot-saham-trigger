@@ -9,15 +9,18 @@ jobs:
   buka-website:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Puppeteer (Headless Chrome)
-        run: npm i puppeteer
+      - name: Install Stealth Puppeteer (Mode Ninja)
+        run: npm i puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
         
       - name: Eksekusi URL Tembus Keamanan InfinityFree
         run: |
           node -e "
-          const puppeteer = require('puppeteer');
+          const puppeteer = require('puppeteer-extra');
+          const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+          puppeteer.use(StealthPlugin());
+
           (async () => {
-            console.log('Membuka browser...');
+            console.log('Membuka browser Ninja...');
             const browser = await puppeteer.launch({args: ['--no-sandbox']});
             const page = await browser.newPage();
             
@@ -26,10 +29,10 @@ jobs:
             console.log('Mengunjungi URL master_auto.php...');
             await page.goto('https://saham.xo.je/master_auto.php');
             
-            console.log('⏳ PERHATIAN: Browser dipaksa standby selama 60 DETIK...');
+            console.log('⏳ Menunggu 60 detik agar mesin PHP tereksekusi penuh...');
             await new Promise(r => setTimeout(r, 60000));
             
-            console.log('✅ Waktu tunggu selesai! Menutup browser.');
+            console.log('✅ Waktu tunggu selesai!');
             await browser.close();
           })();
           "
