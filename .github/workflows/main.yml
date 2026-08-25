@@ -9,9 +9,6 @@ jobs:
   buka-website:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up job
-        run: echo "Memulai tugas harian..."
-        
       - name: Install Puppeteer (Headless Chrome)
         run: npm i puppeteer
         
@@ -24,20 +21,15 @@ jobs:
             const browser = await puppeteer.launch({args: ['--no-sandbox']});
             const page = await browser.newPage();
             
-            // Menyamar menjadi browser asli
             await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
             
-            console.log('Mengunjungi URL...');
-            // Kita hapus parameter waitUntil agar ia tidak tertipu oleh halaman loading
+            console.log('Mengunjungi URL master_auto.php...');
             await page.goto('https://saham.xo.je/master_auto.php');
             
             console.log('⏳ PERHATIAN: Browser dipaksa standby selama 60 DETIK...');
-            console.log('⏳ Menunggu InfinityFree melakukan redirect dan PHP menuntaskan tugas...');
-            
-            // PAKSA MENUNGGU 60 DETIK (TIDAK BOLEH DITUTUP)
             await new Promise(r => setTimeout(r, 60000));
             
-            console.log('✅ Waktu tunggu 60 detik selesai! Menutup browser.');
+            console.log('✅ Waktu tunggu selesai! Menutup browser.');
             await browser.close();
           })();
           "
