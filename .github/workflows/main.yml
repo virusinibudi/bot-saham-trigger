@@ -2,7 +2,7 @@ name: Pemicu Autopilot Saham
 
 on:
   schedule:
-   # Tes eksekusi jam 18:25 WIB (11:25 UTC)
+    # Tes eksekusi jam 18:25 WIB (11:25 UTC)
     - cron: '25 11 * * *'
   workflow_dispatch:
 
@@ -19,7 +19,7 @@ jobs:
           const puppeteer = require('puppeteer-extra');
           const StealthPlugin = require('puppeteer-extra-plugin-stealth');
           puppeteer.use(StealthPlugin());
-
+          
           (async () => {
             console.log('Membuka browser Ninja...');
             const browser = await puppeteer.launch({args: ['--no-sandbox']});
